@@ -1,5 +1,6 @@
+var deleteInterval = 1000
+var randomNumber = 0
 var allNodes = document.getElementsByTagName("*")
-var randomNumber
 var deleteNode = function(){
   randomNumber = Math.floor(Math.random()*allNodes.length)
   // If something doesn't have more than two child nodes, just to keep things interesting
@@ -18,4 +19,4 @@ var deleteNodes = setInterval(function(){
   } else {
     deleteNode()
   }
-},1000)
+},deleteInterval)
