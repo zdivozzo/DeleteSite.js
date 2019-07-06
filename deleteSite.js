@@ -1,22 +1,30 @@
-var deleteInterval = 1000
-var randomNumber = 0
-var allNodes = document.getElementsByTagName("*")
-var deleteNode = function(){
-  randomNumber = Math.floor(Math.random()*allNodes.length)
-  // If something doesn't have more than two child nodes, just to keep things interesting
-  if(allNodes[randomNumber].getElementsByTagName('*').length <= 2){
-    allNodes[randomNumber].remove()
-    // Get an updated list of nodes currently in the DOM
-    allNodes = document.getElementsByTagName("*")
-  } else {
-    deleteNode()
-  }
-}
+// Number of milliseconds inbetween each node removal
+const deleteInterval = 1000;
 
-var deleteNodes = setInterval(function(){
-  if(allNodes.length === 0){
-    clearInterval(deleteNodes)
+// An HTMLCollection of all nodes on the current page
+let allNodes = document.getElementsByTagName("*");
+
+// Function to delete nodes
+const deleteNode = () => {
+  // Select a random node for deletion
+  let randomNode = allNodes[Math.floor(Math.random() * allNodes.length)];
+
+  // See how many child nodes this node has. If more than 2, we'll skip it so we don't accidentally catch
+  // a big container and delete too many nodes at once.
+  let numberOfChildNodes = randomNode.getElementsByTagName("*").length;
+
+  if (numberOfChildNodes <= 2) {
+    randomNode.remove();
+    // Get an updated list of nodes currently in the DOM
+    allNodes = document.getElementsByTagName("*");
   } else {
-    deleteNode()
+    // Try again
+    deleteNode();
   }
-},deleteInterval)
+};
+
+// Delete a node every xx milliseconds
+const deleteNodes = setInterval(
+  () => (allNodes.length === 0 ? clearInterval(deleteNodes) : deleteNode()),
+  deleteInterval
+);
